@@ -5,6 +5,12 @@ import { withNavigation } from 'react-navigation'
 import ResultDetail from './ResultDetail'
 
 const ResultList = ({ title, results, navigation }) => {
+
+    // fixing show title if results not empty
+    if (!results.length) {
+        return null
+    }
+
     return (
         <View style = { styles.container } >
             <Text style = { styles.title }>{ title }</Text>

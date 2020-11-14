@@ -29,6 +29,7 @@ const SearchScreen = () => {
             <ResultList title = "Hemat" results = { filterResultByPrice('$') } />
             <ResultList title = "Sedang" results = { filterResultByPrice('$$') } />
             <ResultList title = "Mevvah" results = { filterResultByPrice('$$$') } />
+            <ResultList title = "Sultans" results = { filterResultByPrice('$$$$') } />
         </ScrollView>
     </>
     )
