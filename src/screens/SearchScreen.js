@@ -8,7 +8,7 @@ const SearchScreen = () => {
     const [term, setTerm] = useState('')
     const [searchApi, results, errorMessage] = useResults()
 
-    console.log(results)
+    // console.log(results)
     
     const filterResultByPrice = (price) => {
         // price === '$' || '$$' || '$$$'
