@@ -1,42 +1,43 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import yelp from '../api/yelp'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import ResultList from '../components/ResultList'
 import SearchBar from '../components/SearchBar'
+import useResults from '../hooks/useResults'
 
-const SearchScreen = () => {
+const SearchScreen = ( {navigation} ) => {
     const [term, setTerm] = useState('')
-    const [results, setResults] = useState([])
-    const [errorMessage, setErrorMessage] = useState('')
+    const [searchApi, results, errorMessage] = useResults()
+
+    console.log(results)
     
-    const searchApi = async () => {
-        try {
-            const response = await yelp.get('/search', {
-                params: {
-                    limit: 50,
-                    term,
-                    location: 'san jose'
-                }
-            })
-            setResults(response.data.businesses)
-            setErrorMessage('')
-        } catch (err) {
-            setErrorMessage('something went wrong!')
-        }
+    const filterResultByPrice = (price) => {
+        // price === '$' || '$$' || '$$$'
+        return results.filter( (results) => {
+            return results.price === price
+        })
     }
 
     return (
-    <View>
+    <>
         <SearchBar 
             term = { term } 
             onTermChange = { (newTerm) => setTerm(newTerm) }
-            onTermSubmit = { () => searchApi() }
+            onTermSubmit = { () => searchApi(term) }
         />
         { errorMessage ? <Text>{ errorMessage }</Text> : null }
-        <Text>We have found { results.length } results</Text>
-    </View>
+        <ScrollView>
+            <ResultList title = "Hemat" results = { filterResultByPrice('$') } navigation = {navigation} />
+            <ResultList title = "Sedang" results = { filterResultByPrice('$$') } navigation = {navigation} />
+            <ResultList title = "Mevvah" results = { filterResultByPrice('$$$') } navigation = {navigation} />
+        </ScrollView>
+    </>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    title: {
+        marginBottom: 5
+    }
+})
 
 export default SearchScreen
